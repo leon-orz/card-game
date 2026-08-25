@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>德州扑克 · 人机对战</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <!-- 设置界面 -->
+  <div id="setup-screen" class="screen">
+    <div class="setup-card">
+      <h1 class="logo">♠ 德州扑克 <span>vs AI</span></h1>
+      <p class="subtitle">单机人机对战 · 虚拟筹码</p>
+      <div class="setting-group">
+        <label>初始筹码（每方）</label>
+        <div class="chip-input">
+          <button class="stepper" data-step="-500">−</button>
+          <input type="number" id="start-chips" value="2000" min="500" max="100000" step="500">
+          <button class="stepper" data-step="500">+</button>
+        </div>
+      </div>
+      <div class="setting-group">
+        <label>盲注</label>
+        <select id="start-blinds">
+          <option value="10" selected>小盲 10 / 大盲 20</option>
+          <option value="25">小盲 25 / 大盲 50</option>
+          <option value="50">小盲 50 / 大盲 100</option>
+          <option value="100">小盲 100 / 大盲 200</option>
+        </select>
+      </div>
+      <div class="setting-group">
+        <label>AI 难度</label>
+        <div class="difficulty">
+          <button class="diff-btn active" data-diff="normal">标准</button>
+          <button class="diff-btn" data-diff="hard">激进</button>
+        </div>
+      </div>
+      <button id="start-btn" class="btn primary big">开始游戏</button>
+      <p class="hint">支持多局连续对战，直至一方筹码耗尽</p>
+    </div>
+  </div>
+
+  <!-- 游戏界面 -->
+  <div id="game-screen" class="screen hidden">
+    <div class="topbar">
+      <div class="bar-left">
+        <button id="menu-btn" class="btn ghost small">☰ 菜单</button>
+        <span id="round-label" class="round-label">翻牌前</span>
+      </div>
+      <div class="bar-right">
+        <span id="dealer-tag" class="dealer-tag">D</span>
+        <span id="hand-info" class="hand-info"></span>
+      </div>
+    </div>
+
+    <!-- 牌桌 -->
+    <div class="table-wrap">
+      <div class="table">
+        <!-- AI 座位 -->
+        <div class="seat seat-ai" id="seat-ai">
+          <div class="avatar">🤖</div>
+          <div class="player-name">AI 对手</div>
+          <div class="chips-info"><span class="chip-icon">●</span><span id="ai-chips">2000</span></div>
+          <div class="cards" id="ai-cards"></div>
+          <div class="bet-tray" id="ai-bet-tray"><span class="bet-amount" id="ai-bet">0</span></div>
+          <div class="status-badge" id="ai-status"></div>
+          <div class="decision-bubble" id="ai-decision"></div>
+        </div>
+
+        <!-- 公共牌区 -->
+        <div class="board-area">
+          <div class="pot-display"><span>底池</span><strong id="pot-amount">0</strong></div>
+          <div class="community" id="community">
+            <div class="card-slot" data-idx="0"></div>
+            <div class="card-slot" data-idx="1"></div>
+            <div class="card-slot" data-idx="2"></div>
+            <div class="card-slot" data-idx="3"></div>
+            <div class="card-slot" data-idx="4"></div>
+          </div>
+          <div id="hand-result" class="hand-result hidden"></div>
+        </div>
+
+        <!-- 玩家座位 -->
+        <div class="seat seat-player" id="seat-player">
+          <div class="avatar">😎</div>
+          <div class="player-name">你</div>
+          <div class="chips-info"><span class="chip-icon">●</span><span id="player-chips">2000</span></div>
+          <div class="cards" id="player-cards"></div>
+          <div class="bet-tray" id="player-bet-tray"><span class="bet-amount" id="player-bet">0</span></div>
+          <div class="status-badge" id="player-status"></div>
+          <div id="player-hand-name" class="hand-name"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 操作区 -->
+    <div class="controls" id="controls">
+      <button id="btn-fold" class="btn act fold" disabled>弃牌</button>
+      <button id="btn-check-call" class="btn act call" disabled>过牌</button>
+      <div class="raise-box">
+        <button id="btn-raise" class="btn act raise" disabled>加注</button>
+        <div class="raise-input-row">
+          <input type="range" id="raise-slider" min="0" max="100" value="0" disabled>
+          <span id="raise-amount-label"></span>
+        </div>
+      </div>
+      <button id="btn-allin" class="btn act allin" disabled>全下</button>
+    </div>
+  </div>
+
+  <!-- 游戏结束 -->
+  <div id="gameover-screen" class="screen hidden">
+    <div class="gameover-card">
+      <h2 id="gameover-title"></h2>
+      <p id="gameover-desc"></p>
+      <div id="gameover-stats" class="stats"></div>
+      <button id="restart-btn" class="btn primary big">再来一局</button>
+      <button id="back-menu-btn" class="btn ghost">返回设置</button>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" class="hidden"></div>
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <h3 id="modal-title"></h3>
+    <div id="modal-body"></div>
+    <div class="modal-actions" id="modal-actions"></div>
+  </div>
+</div>
+
+<script src="js/cards.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

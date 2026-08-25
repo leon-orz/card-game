@@ -1,0 +1,336 @@
+/* =========================================================
+ * style.css — 德州扑克牌桌视觉风格
+ * ========================================================= */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --felt: #1b5e3b;
+  --felt-dark: #0f3d26;
+  --gold: #d9a83c;
+  --wood: #5a3a22;
+  --card-white: #f7f3e8;
+  --red: #d0332f;
+  --black: #1a1a1a;
+  --panel: #241a12;
+  --text: #f0ead8;
+  --muted: #9a8d78;
+}
+
+html, body {
+  height: 100%;
+  font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  color: var(--text);
+  background: radial-gradient(ellipse at 50% 30%, #2a3a4d 0%, #16212e 60%, #0d141d 100%);
+  overflow-x: hidden;
+}
+
+.hidden { display: none !important; }
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+/* ---------- 设置界面 ---------- */
+.setup-card {
+  width: min(440px, 92vw);
+  background: linear-gradient(160deg, #2c2117, #1d150e);
+  border: 2px solid #6b4a26;
+  border-radius: 18px;
+  padding: 40px 36px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.logo { font-size: 30px; letter-spacing: 1px; color: var(--gold); text-shadow: 0 2px 8px rgba(217, 168, 60, 0.35); }
+.logo span { color: var(--muted); font-size: 16px; font-weight: normal; }
+.subtitle { color: var(--muted); margin: 6px 0 28px; font-size: 14px; }
+
+.setting-group { margin-bottom: 22px; text-align: left; }
+.setting-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+
+.chip-input { display: flex; align-items: center; gap: 10px; }
+.chip-input input {
+  flex: 1; background: #0f0b07; border: 1px solid #6b4a26;
+  color: var(--gold); font-size: 20px; font-weight: 700;
+  text-align: center; border-radius: 10px; padding: 10px 6px; outline: none;
+}
+.stepper {
+  width: 44px; height: 44px; border-radius: 10px; border: 1px solid #6b4a26;
+  background-color: #332517; color: var(--gold); font-size: 20px; cursor: pointer;
+}
+.stepper:hover { background-color: #4a3420; }
+
+select#start-blinds {
+  width: 100%; background: #0f0b07; border: 1px solid #6b4a26;
+  color: var(--text); font-size: 15px; padding: 11px; border-radius: 10px; outline: none;
+}
+
+.difficulty { display: flex; gap: 10px; }
+.diff-btn {
+  flex: 1; padding: 10px 0; border-radius: 10px; border: 1px solid #6b4a26;
+  background: #332517; color: var(--muted); font-size: 14px; cursor: pointer; transition: all .15s;
+}
+.diff-btn.active { background: var(--gold); color: #201500; border-color: var(--gold); font-weight: 700; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  border: none; border-radius: 10px; padding: 12px 22px;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  transition: transform .1s, box-shadow .15s, background .15s;
+  color: var(--text);
+}
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: .35; cursor: not-allowed; }
+
+.btn.primary {
+  background: linear-gradient(180deg, #e7b654, #c8912e);
+  color: #241700; box-shadow: 0 4px 14px rgba(217, 168, 60, 0.35);
+}
+.btn.primary:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(217, 168, 60, 0.5); }
+.btn.ghost { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); }
+.btn.ghost:hover:not(:disabled) { background: rgba(255, 255, 255, 0.16); }
+.btn.big { width: 100%; padding: 14px; font-size: 17px; margin-top: 8px; }
+.btn.small { padding: 6px 12px; font-size: 13px; }
+
+.hint { margin-top: 16px; font-size: 12px; color: var(--muted); }
+
+/* ---------- 游戏界面 ---------- */
+#game-screen { padding: 0 12px; }
+
+.topbar { width: 100%; max-width: 860px; display: flex; justify-content: space-between; align-items: center; padding: 12px 4px; }
+.bar-left, .bar-right { display: flex; align-items: center; gap: 10px; }
+.round-label {
+  background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px; padding: 4px 14px; font-size: 13px; color: var(--gold); letter-spacing: 2px;
+}
+.dealer-tag {
+  width: 26px; height: 26px; border-radius: 50%; background: #fff; color: #111;
+  font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
+}
+.hand-info { font-size: 13px; color: var(--muted); }
+
+/* ---------- 牌桌 ---------- */
+.table-wrap { width: 100%; max-width: 860px; }
+
+.table {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(255, 255, 255, 0.10), transparent 60%),
+    radial-gradient(ellipse at 50% 50%, var(--felt) 0%, var(--felt-dark) 78%, #072417 100%);
+  border: 14px solid var(--wood);
+  border-radius: 210px / 150px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6), inset 0 0 60px rgba(0, 0, 0, 0.5), inset 0 0 0 4px rgba(255, 255, 255, 0.08);
+  min-height: 560px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 26px;
+}
+.table::before {
+  content: ''; position: absolute; inset: 10px;
+  border: 2px solid rgba(217, 168, 60, 0.35); border-radius: 200px / 140px; pointer-events: none;
+}
+
+/* ---------- 座位 ---------- */
+.seat { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; z-index: 2; }
+.seat-ai { margin-top: -10px; }
+.seat-player { margin-bottom: -6px; }
+
+.avatar {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 30%, #ffe9a8, #caa04a);
+  border: 3px solid #f7f3e8; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+.seat-player .avatar { background: radial-gradient(circle at 32% 30%, #a8e6ff, #4a9acd); }
+
+.player-name { font-size: 14px; font-weight: 700; text-shadow: 0 1px 4px rgba(0, 0, 0, .8); }
+
+.chips-info {
+  background: rgba(0, 0, 0, 0.45); border-radius: 999px; padding: 3px 12px;
+  font-size: 14px; font-weight: 700; color: #ffd76a; display: flex; align-items: center; gap: 6px;
+}
+.chip-icon { color: #ffd76a; font-size: 12px; text-shadow: 0 0 6px rgba(255, 215, 106, 0.8); }
+
+.cards { display: flex; gap: 6px; min-height: 72px; align-items: center; }
+
+/* ---------- 扑克牌 ---------- */
+.card {
+  width: 52px; height: 72px;
+  background: linear-gradient(150deg, #ffffff, var(--card-white));
+  border-radius: 7px; border: 1px solid #c9c2b2;
+  position: relative; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); user-select: none;
+}
+.card.red { color: var(--red); }
+.card.black { color: var(--black); }
+
+.card .corner { position: absolute; font-size: 12px; font-weight: 700; line-height: 1; text-align: center; }
+.card .corner.top { top: 4px; left: 5px; }
+.card .corner.bottom { bottom: 4px; right: 5px; transform: rotate(180deg); }
+.card .center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; }
+
+.card.back {
+  background: repeating-linear-gradient(45deg, #2c4a8f 0 8px, #3a5ca8 8px 16px);
+  border: 1px solid #1d3264; display: flex; align-items: center; justify-content: center;
+}
+.card.back::after {
+  content: ''; position: absolute; inset: 4px; border-radius: 5px; border: 2px solid rgba(255, 255, 255, 0.35);
+}
+.back-pattern {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e7b654, #8a5a18);
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* 公共牌槽位 */
+.community { display: flex; gap: 8px; }
+.card-slot {
+  width: 56px; height: 78px; border-radius: 7px;
+  border: 2px dashed rgba(255, 255, 255, 0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-slot .card { animation: dealIn .3s ease; }
+@keyframes dealIn { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ---------- 底池 ---------- */
+.pot-display {
+  background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(217, 168, 60, 0.4);
+  border-radius: 12px; padding: 5px 18px; font-size: 13px; color: var(--muted);
+  display: inline-flex; align-items: baseline; gap: 8px;
+}
+.pot-display strong { color: #ffd76a; font-size: 18px; }
+
+.hand-result {
+  background: rgba(0, 0, 0, 0.72); border: 2px solid var(--gold); border-radius: 12px;
+  padding: 8px 18px; font-size: 15px; font-weight: 700; color: #fff;
+  text-align: center; animation: dealIn .4s ease; max-width: 90%;
+}
+.hand-result.win { border-color: #4ade80; color: #86efac; }
+
+.hand-name { font-size: 12px; color: #ffe9a8; text-shadow: 0 1px 3px rgba(0, 0, 0, .8); min-height: 16px; }
+
+/* 下注托盘 */
+.bet-tray {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  bottom: -26px; background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 215, 106, 0.5); border-radius: 999px;
+  padding: 2px 12px; font-size: 13px; font-weight: 700; color: #ffd76a;
+  opacity: 0; transition: opacity .2s; white-space: nowrap; z-index: 5;
+}
+.bet-tray.visible { opacity: 1; }
+.bet-amount::before { content: '● '; color: #ffd76a; font-size: 10px; }
+
+/* 状态徽标 */
+.status-badge {
+  position: absolute; right: -8px; top: -6px;
+  background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; color: #fff;
+  opacity: 0; transition: opacity .2s; white-space: nowrap; z-index: 6;
+}
+.status-badge.visible { opacity: 1; }
+
+/* AI 决策气泡 */
+.decision-bubble {
+  position: absolute; left: calc(50% + 30px); top: 8px;
+  background: rgba(255, 255, 255, 0.92); color: #222; font-size: 13px; font-weight: 700;
+  border-radius: 10px; padding: 5px 12px; opacity: 0; transition: opacity .2s;
+  white-space: nowrap; z-index: 8; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35); pointer-events: none;
+}
+.decision-bubble::before {
+  content: ''; position: absolute; right: 100%; top: 12px;
+  border: 6px solid transparent; border-right-color: rgba(255, 255, 255, 0.92);
+}
+.decision-bubble.visible { opacity: 1; }
+
+/* 庄家标记 */
+#dealer-tag.on-player { background: #4ade80; color: #062b14; box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3); }
+#dealer-tag.on-ai { background: #f87171; color: #2b0606; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.3); }
+.seat .dealer-tag {
+  position: absolute;
+  left: -16px; top: -16px;
+  z-index: 9;
+  animation: dealIn .3s ease;
+}
+
+/* ---------- 操作区 ---------- */
+.controls {
+  width: 100%; max-width: 860px; display: flex; align-items: flex-end;
+  gap: 12px; padding: 16px 4px 10px;
+}
+
+.btn.act { padding: 13px 0; font-size: 15px; }
+.btn.fold { flex: 1; background: #7a2e2a; }
+.btn.fold:hover:not(:disabled) { background: #98403a; }
+.btn.call {
+  flex: 1.4; background: linear-gradient(180deg, #38b375, #1f7d4e);
+  box-shadow: 0 4px 12px rgba(46, 158, 99, 0.3);
+}
+.btn.call:hover:not(:disabled) { background: linear-gradient(180deg, #43c986, #27a05f); }
+.btn.raise { flex: 1.2; background: linear-gradient(180deg, #e0a93c, #b47e1d); color: #241700; }
+.btn.raise:hover:not(:disabled) { background: linear-gradient(180deg, #efbb54, #c8912e); }
+.btn.allin { flex: 1; background: linear-gradient(180deg, #cf4440, #a02a26); color: #fff; }
+.btn.allin:hover:not(:disabled) { background: linear-gradient(180deg, #de524d, #b8352f); }
+
+.raise-box { flex: 2.2; display: flex; flex-direction: column; gap: 6px; }
+.raise-input-row { display: flex; align-items: center; gap: 8px; }
+.raise-input-row input[type="range"] { flex: 1; accent-color: var(--gold); }
+#raise-amount-label { font-size: 12px; color: #ffd76a; min-width: 76px; text-align: right; }
+
+/* ---------- 游戏结束 ---------- */
+.gameover-card {
+  width: min(420px, 92vw);
+  background: linear-gradient(160deg, #2c2117, #1d150e);
+  border: 2px solid #6b4a26; border-radius: 18px;
+  padding: 40px 34px; text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+.gameover-card h2 { font-size: 30px; color: var(--gold); margin-bottom: 10px; }
+.gameover-card p { color: var(--muted); margin-bottom: 24px; font-size: 15px; }
+
+.stats {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 26px;
+}
+.stats div {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px; padding: 14px 8px; display: flex; flex-direction: column; gap: 4px;
+}
+.stats span { font-size: 12px; color: var(--muted); }
+.stats b { font-size: 20px; color: #ffd76a; }
+
+/* ---------- 弹窗 ---------- */
+#overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+  z-index: 90; backdrop-filter: blur(2px);
+}
+.modal {
+  position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  z-index: 91; width: min(360px, 90vw);
+}
+.modal-content {
+  background: linear-gradient(160deg, #2c2117, #1d150e);
+  border: 2px solid #6b4a26; border-radius: 16px;
+  padding: 26px 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+.modal-content h3 { color: var(--gold); margin-bottom: 14px; font-size: 20px; }
+.modal-content p { margin-bottom: 8px; font-size: 14px; }
+.modal-content .muted { color: var(--muted); }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  .table { min-height: 480px; border-width: 10px; border-radius: 140px / 110px; }
+  .card { width: 44px; height: 62px; }
+  .card .center { font-size: 18px; }
+  .card .corner { font-size: 10px; }
+  .card-slot { width: 46px; height: 66px; }
+  .community { gap: 5px; }
+  .btn.act { font-size: 13px; padding: 11px 0; }
+  #raise-amount-label { min-width: 62px; font-size: 11px; }
+  .controls { gap: 8px; }
+}
